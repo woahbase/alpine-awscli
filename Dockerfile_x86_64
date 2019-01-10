@@ -1,0 +1,18 @@
+ARG ARCH=frommakefile
+ARG DOCKERSRC=frommakefile
+ARG USERNAME=frommakefile
+#
+FROM ${USERNAME}/${DOCKERSRC}:${ARCH}
+#
+ARG PUID=1000
+ARG PGID=1000
+#
+RUN set -xe \
+    && apk add --no-cache --purge -uU curl ca-certificates openssh-client groff git less \
+    && apk --update add --virtual .build-dependencies python3-dev libffi-dev openssl-dev build-base \
+    && pip install --no-cache --upgrade requests awscli boto3 PyYAML \
+    && apk del --purge .build-dependencies \
+    && rm -rf /var/cache/apk/* /tmp/*
+# ENTRYPOINT ["/init"]
+# ENTRYPOINT ["/usr/bin/python"]
+# ENTRYPOINT ["aws"]
