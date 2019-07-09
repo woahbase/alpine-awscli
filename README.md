@@ -1,4 +1,4 @@
-[![build status][251]][232] [![commit][255]][231] [![version:x86_64][256]][235] [![size:x86_64][257]][235] [![version:armhf][258]][236] [![size:armhf][259]][236]
+[![build status][251]][232] [![commit][255]][231] [![version:x86_64][256]][235] [![size:x86_64][257]][235] [![version:armhf][258]][236] [![size:armhf][259]][236] [![version:armv7l][260]][237] [![size:armv7l][261]][237] [![version:aarch64][262]][238] [![size:aarch64][263]][238]
 
 ## [Alpine-AWS-CLI][234]
 #### Container for Alpine Linux + Python3 + AWS-CLI
@@ -6,18 +6,23 @@
 
 This [image][233] serves as the base container for applications
 / services that require [AWSCLI][135] from the terminal or use
-[Boto3][138] programmatically using [Python3][136], includes [Pip][137].
+[Boto3][138] programmatically using [Python3][136], includes
+[Pip][137] and a few tools like [eb cli][139] for managing Elastic
+Beanstalk, and [cfn-lint][140] [cfn-flip][141], and [sceptre][142]
+for cloudformation.
 
 Based on [Alpine Linux][131] from my [alpine-python3][132] image with
 the [s6][133] init system [overlayed][134] in it.
 
 The image is tagged respectively for the following architectures,
 * **armhf**
+* **armv7l**
+* **aarch64**
 * **x86_64** (retagged as the `latest` )
 
-**armhf** builds have embedded binfmt_misc support and contain the
+**non-x86_64** builds have embedded binfmt_misc support and contain the
 [qemu-user-static][105] binary that allows for running it also inside
-an x64 environment that has it.
+an x86_64 environment that has it.
 
 ---
 #### Get the Image
@@ -101,14 +106,14 @@ docker restart docker_awscli
 Get a shell inside a already running container,
 
 ```
-# make shell
+# make debug
 docker exec -it docker_awscli /bin/bash
 ```
 
 set user or login as root,
 
 ```
-# make rshell
+# make rdebug
 docker exec -u root -it docker_awscli /bin/bash
 ```
 
@@ -158,11 +163,9 @@ for other architectures.]
 docker build --rm --compress --force-rm \
   --no-cache=true --pull \
   -f ./Dockerfile_x86_64 \
-  --build-arg ARCH=x86_64 \
-  --build-arg DOCKERSRC=alpine-python3 \
+  --build-arg DOCKERSRC=woahbase/alpine-python3:x86_64 \
   --build-arg PGID=1000 \
   --build-arg PUID=1000 \
-  --build-arg USERNAME=woahbase \
   -t woahbase/alpine-awscli:x86_64 \
   .
 ```
@@ -211,6 +214,10 @@ Maintained by [WOAHBase][204].
 [136]: https://www.python.org/
 [137]: https://pypi.python.org/pypi/pip
 [138]: https://boto3.readthedocs.io/
+[139]: https://pypi.org/project/awsebcli/
+[140]: https://github.com/aws-cloudformation/cfn-python-lint
+[141]: https://github.com/awslabs/aws-cfn-template-flip
+[142]: https://github.com/Sceptre/sceptre
 
 [201]: https://github.com/woahbase
 [202]: https://travis-ci.org/woahbase/
@@ -223,6 +230,8 @@ Maintained by [WOAHBase][204].
 [234]: https://woahbase.online/#/images/alpine-awscli
 [235]: https://microbadger.com/images/woahbase/alpine-awscli:x86_64
 [236]: https://microbadger.com/images/woahbase/alpine-awscli:armhf
+[237]: https://microbadger.com/images/woahbase/alpine-awscli:armv7l
+[238]: https://microbadger.com/images/woahbase/alpine-awscli:aarch64
 
 [251]: https://travis-ci.org/woahbase/alpine-awscli.svg?branch=master
 
@@ -233,3 +242,9 @@ Maintained by [WOAHBase][204].
 
 [258]: https://images.microbadger.com/badges/version/woahbase/alpine-awscli:armhf.svg
 [259]: https://images.microbadger.com/badges/image/woahbase/alpine-awscli:armhf.svg
+
+[260]: https://images.microbadger.com/badges/version/woahbase/alpine-awscli:armv7l.svg
+[261]: https://images.microbadger.com/badges/image/woahbase/alpine-awscli:armv7l.svg
+
+[262]: https://images.microbadger.com/badges/version/woahbase/alpine-awscli:aarch64.svg
+[263]: https://images.microbadger.com/badges/image/woahbase/alpine-awscli:aarch64.svg
