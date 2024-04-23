@@ -21,18 +21,19 @@ RUN set -xe \
         libffi \
         openssh \
         openssl \
-        py3-bcrypt \
-        py3-cryptography \
 # enable if required rebuilding from GLibC base-image (for SAM-cli)
         # py3-pip \
         # py3-setuptools \
         # py3-wheel \
+        py3-bcrypt \
+        py3-cryptography \
+        py3-pydantic \
         py3-pynacl \
         py3-ruamel.yaml.clib \
         py3-yaml \
     && apk --update add --virtual .build-dependencies \
         build-base \
-        cargo \
+        # cargo \
         libffi-dev \
         openssl-dev \
         python3-dev \
