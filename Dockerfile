@@ -32,6 +32,7 @@ RUN set -xe \
         py3-yaml \
     && apk --update add --virtual .build-dependencies \
         build-base \
+        cargo \
         libffi-dev \
         openssl-dev \
         python3-dev \
