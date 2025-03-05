@@ -9,8 +9,7 @@ FROM ${IMAGEBASE}
 #
 ENV \
     AWSEBCLI_VENV=/usr/local/awsebcli-venv \
-    CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
-    PYTHONUNBUFFERED=1
+    CRYPTOGRAPHY_DONT_BUILD_RUST=1
 #
 RUN set -xe \
     && apk add --no-cache --purge -uU \
@@ -26,14 +25,16 @@ RUN set -xe \
         # py3-setuptools \
         # py3-wheel \
         py3-bcrypt \
+        py3-certifi \
         py3-cryptography \
         py3-pydantic \
         py3-pynacl \
         py3-ruamel.yaml.clib \
+        py3-six \
         py3-yaml \
     && apk --update add --virtual .build-dependencies \
         build-base \
-        # cargo \
+        cargo \
         libffi-dev \
         openssl-dev \
         python3-dev \
@@ -149,7 +150,7 @@ RUN set -xe \
     #         ;; \
     #    esac \
     && apk del --purge .build-dependencies \
-    && rm -rf /var/cache/apk/* /tmp/* /root/.cache
+    && rm -rf /var/cache/apk/* /tmp/* /root/.cache /root/.cargo
 #
 ENTRYPOINT ["/usershell"]
 #
